@@ -100,7 +100,11 @@ int main(void)
     while (!glfwWindowShouldClose(win))
     {
         /* Input */
+        nk_input_begin(ctx);
         glfwPollEvents();
+        //glfwWaitEvents();
+        nk_input_end(ctx);
+
         nk_glfw3_new_frame();
 
         /* GUI */
