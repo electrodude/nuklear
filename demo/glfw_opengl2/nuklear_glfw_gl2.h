@@ -284,7 +284,7 @@ nk_gflw3_scroll_callback(GLFWwindow *win, double xoff, double yoff)
 }
 
 NK_INTERN void
-nk_glfw3_clipbard_paste(nk_handle usr, struct nk_text_edit *edit)
+nk_glfw3_clipboard_paste(nk_handle usr, struct nk_text_edit *edit)
 {
     const char *text = glfwGetClipboardString(glfw.win);
     if (text) nk_textedit_paste(edit, text, nk_strlen(text));
@@ -292,7 +292,7 @@ nk_glfw3_clipbard_paste(nk_handle usr, struct nk_text_edit *edit)
 }
 
 NK_INTERN void
-nk_glfw3_clipbard_copy(nk_handle usr, const char *text, int len)
+nk_glfw3_clipboard_copy(nk_handle usr, const char *text, int len)
 {
     char *str = 0;
     (void)usr;
@@ -318,8 +318,8 @@ nk_glfw3_init(GLFWwindow *win, enum nk_glfw_init_state init_state)
     }
 
     nk_init_default(&glfw.ctx, 0);
-    glfw.ctx.clip.copy = nk_glfw3_clipbard_copy;
-    glfw.ctx.clip.paste = nk_glfw3_clipbard_paste;
+    glfw.ctx.clip.copy = nk_glfw3_clipboard_copy;
+    glfw.ctx.clip.paste = nk_glfw3_clipboard_paste;
     glfw.ctx.clip.userdata = nk_handle_ptr(0);
     nk_buffer_init_default(&glfw.ogl.cmds);
     return &glfw.ctx;
