@@ -48,7 +48,7 @@ NK_API void                 nk_glfw3_key_callback(GLFWwindow *win, int key, int 
 NK_API void                 nk_glfw3_char_callback(GLFWwindow *win, unsigned int codepoint);
 NK_API void                 nk_glfw3_mousebutton_callback(GLFWwindow *win, int button, int action, int mods);
 NK_API void                 nk_glfw3_cursorpos_callback(GLFWwindow *win, double x, double y);
-NK_API void                 nk_gflw3_scroll_callback(GLFWwindow *win, double xoff, double yoff);
+NK_API void                 nk_glfw3_scroll_callback(GLFWwindow *win, double xoff, double yoff);
 
 #endif
 
@@ -281,7 +281,7 @@ nk_glfw3_cursorpos_callback(GLFWwindow *win, double x, double y)
 }
 
 NK_API void
-nk_gflw3_scroll_callback(GLFWwindow *win, double xoff, double yoff)
+nk_glfw3_scroll_callback(GLFWwindow *win, double xoff, double yoff)
 {
     struct nk_glfw *glfw = glfwGetWindowUserPointer(win);
     (void)xoff;
@@ -315,7 +315,7 @@ nk_glfw3_init(struct nk_glfw *glfw, GLFWwindow *win, enum nk_glfw_init_state ini
 {
     glfw->win = win;
     if (init_state == NK_GLFW3_INSTALL_CALLBACKS) {
-        glfwSetScrollCallback(win, nk_gflw3_scroll_callback);
+        glfwSetScrollCallback(win, nk_glfw3_scroll_callback);
         glfwSetKeyCallback(win, nk_glfw3_key_callback);
         glfwSetCharCallback(win, nk_glfw3_char_callback);
         glfwSetMouseButtonCallback(win, nk_glfw3_mousebutton_callback);
