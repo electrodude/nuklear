@@ -55,18 +55,18 @@ struct nk_glfw {
     struct nk_vec2 double_click_pos;
 };
 
-NK_API struct nk_context*   nk_glfw3_init(struct nk_glfw* glfw, GLFWwindow *win, enum nk_glfw_init_state);
-NK_API void                 nk_glfw3_shutdown(struct nk_glfw* glfw);
-NK_API void                 nk_glfw3_font_stash_begin(struct nk_glfw* glfw, struct nk_font_atlas **atlas);
-NK_API void                 nk_glfw3_font_stash_end(struct nk_glfw* glfw);
-NK_API void                 nk_glfw3_new_frame(struct nk_glfw* glfw);
-NK_API void                 nk_glfw3_render(struct nk_glfw* glfw, enum nk_anti_aliasing, int max_vertex_buffer, int max_element_buffer);
+NK_API struct nk_context   *nk_glfw3_init(struct nk_glfw *glfw, GLFWwindow *win, enum nk_glfw_init_state);
+NK_API void                 nk_glfw3_shutdown(struct nk_glfw *glfw);
+NK_API void                 nk_glfw3_font_stash_begin(struct nk_glfw *glfw, struct nk_font_atlas **atlas);
+NK_API void                 nk_glfw3_font_stash_end(struct nk_glfw *glfw);
+NK_API void                 nk_glfw3_new_frame(struct nk_glfw *glfw);
+NK_API void                 nk_glfw3_render(struct nk_glfw *glfw, enum nk_anti_aliasing, int max_vertex_buffer, int max_element_buffer);
 
-NK_API void                 nk_glfw3_device_destroy(struct nk_glfw* glfw);
-NK_API void                 nk_glfw3_device_create(struct nk_glfw* glfw);
+NK_API void                 nk_glfw3_device_destroy(struct nk_glfw *glfw);
+NK_API void                 nk_glfw3_device_create(struct nk_glfw *glfw);
 
 NK_API void                 nk_glfw3_char_callback(GLFWwindow *win, unsigned int codepoint);
-NK_API void                 nk_gflw3_scroll_callback(GLFWwindow *win, double xoff, double yoff);
+NK_API void                 nk_glfw3_scroll_callback(GLFWwindow *win, double xoff, double yoff);
 NK_API void                 nk_glfw3_mouse_button_callback(GLFWwindow *win, int button, int action, int mods);
 
 #endif
@@ -99,7 +99,7 @@ struct nk_glfw_vertex {
 #endif
 
 NK_API void
-nk_glfw3_device_create(struct nk_glfw* glfw)
+nk_glfw3_device_create(struct nk_glfw *glfw)
 {
     GLint status;
     static const GLchar *vertex_shader =
@@ -182,7 +182,7 @@ nk_glfw3_device_create(struct nk_glfw* glfw)
 }
 
 NK_INTERN void
-nk_glfw3_device_upload_atlas(struct nk_glfw* glfw, const void *image, int width, int height)
+nk_glfw3_device_upload_atlas(struct nk_glfw *glfw, const void *image, int width, int height)
 {
     struct nk_glfw_device *dev = &glfw->ogl;
     glGenTextures(1, &dev->font_tex);
@@ -194,7 +194,7 @@ nk_glfw3_device_upload_atlas(struct nk_glfw* glfw, const void *image, int width,
 }
 
 NK_API void
-nk_glfw3_device_destroy(struct nk_glfw* glfw)
+nk_glfw3_device_destroy(struct nk_glfw *glfw)
 {
     struct nk_glfw_device *dev = &glfw->ogl;
     glDetachShader(dev->prog, dev->vert_shdr);
@@ -209,7 +209,7 @@ nk_glfw3_device_destroy(struct nk_glfw* glfw)
 }
 
 NK_API void
-nk_glfw3_render(struct nk_glfw* glfw, enum nk_anti_aliasing AA, int max_vertex_buffer, int max_element_buffer)
+nk_glfw3_render(struct nk_glfw *glfw, enum nk_anti_aliasing AA, int max_vertex_buffer, int max_element_buffer)
 {
     struct nk_glfw_device *dev = &glfw->ogl;
     struct nk_buffer vbuf, ebuf;
@@ -311,7 +311,7 @@ nk_glfw3_render(struct nk_glfw* glfw, enum nk_anti_aliasing AA, int max_vertex_b
 NK_API void
 nk_glfw3_char_callback(GLFWwindow *win, unsigned int codepoint)
 {
-    struct nk_glfw* glfw = glfwGetWindowUserPointer(win);
+    struct nk_glfw *glfw = glfwGetWindowUserPointer(win);
     if (glfw->text_len < NK_GLFW_TEXT_MAX)
         glfw->text[glfw->text_len++] = codepoint;
 }
@@ -319,7 +319,7 @@ nk_glfw3_char_callback(GLFWwindow *win, unsigned int codepoint)
 NK_API void
 nk_gflw3_scroll_callback(GLFWwindow *win, double xoff, double yoff)
 {
-    struct nk_glfw* glfw = glfwGetWindowUserPointer(win);
+    struct nk_glfw *glfw = glfwGetWindowUserPointer(win);
     (void)xoff;
     glfw->scroll.x += (float)xoff;
     glfw->scroll.y += (float)yoff;
@@ -330,7 +330,7 @@ nk_glfw3_mouse_button_callback(GLFWwindow* win, int button, int action, int mods
 {
     double x, y;
     if (button != GLFW_MOUSE_BUTTON_LEFT) return;
-    struct nk_glfw* glfw = glfwGetWindowUserPointer(win);
+    struct nk_glfw *glfw = glfwGetWindowUserPointer(win);
     glfwGetCursorPos(win, &x, &y);
     if (action == GLFW_PRESS)  {
         double dt = glfwGetTime() - glfw->last_button_click;
@@ -345,7 +345,7 @@ nk_glfw3_mouse_button_callback(GLFWwindow* win, int button, int action, int mods
 NK_INTERN void
 nk_glfw3_clipboard_paste(nk_handle usr, struct nk_text_edit *edit)
 {
-    struct nk_glfw* glfw = usr.ptr;
+    struct nk_glfw *glfw = usr.ptr;
     const char *text = glfwGetClipboardString(glfw->win);
     if (text) nk_textedit_paste(edit, text, nk_strlen(text));
     (void)usr;
@@ -360,13 +360,13 @@ nk_glfw3_clipboard_copy(nk_handle usr, const char *text, int len)
     if (!str) return;
     memcpy(str, text, (size_t)len);
     str[len] = '\0';
-    struct nk_glfw* glfw = usr.ptr;
+    struct nk_glfw *glfw = usr.ptr;
     glfwSetClipboardString(glfw->win, str);
     free(str);
 }
 
 NK_API struct nk_context*
-nk_glfw3_init(struct nk_glfw* glfw, GLFWwindow *win, enum nk_glfw_init_state init_state)
+nk_glfw3_init(struct nk_glfw *glfw, GLFWwindow *win, enum nk_glfw_init_state init_state)
 {
     glfwSetWindowUserPointer(win, glfw);
     glfw->win = win;
@@ -389,7 +389,7 @@ nk_glfw3_init(struct nk_glfw* glfw, GLFWwindow *win, enum nk_glfw_init_state ini
 }
 
 NK_API void
-nk_glfw3_font_stash_begin(struct nk_glfw* glfw, struct nk_font_atlas **atlas)
+nk_glfw3_font_stash_begin(struct nk_glfw *glfw, struct nk_font_atlas **atlas)
 {
     nk_font_atlas_init_default(&glfw->atlas);
     nk_font_atlas_begin(&glfw->atlas);
@@ -397,7 +397,7 @@ nk_glfw3_font_stash_begin(struct nk_glfw* glfw, struct nk_font_atlas **atlas)
 }
 
 NK_API void
-nk_glfw3_font_stash_end(struct nk_glfw* glfw)
+nk_glfw3_font_stash_end(struct nk_glfw *glfw)
 {
     const void *image; int w, h;
     image = nk_font_atlas_bake(&glfw->atlas, &w, &h, NK_FONT_ATLAS_RGBA32);
@@ -408,7 +408,7 @@ nk_glfw3_font_stash_end(struct nk_glfw* glfw)
 }
 
 NK_API void
-nk_glfw3_new_frame(struct nk_glfw* glfw)
+nk_glfw3_new_frame(struct nk_glfw *glfw)
 {
     int i;
     double x, y;
@@ -487,7 +487,7 @@ nk_glfw3_new_frame(struct nk_glfw* glfw)
 }
 
 NK_API
-void nk_glfw3_shutdown(struct nk_glfw* glfw)
+void nk_glfw3_shutdown(struct nk_glfw *glfw)
 {
     nk_font_atlas_clear(&glfw->atlas);
     nk_free(&glfw->ctx);
