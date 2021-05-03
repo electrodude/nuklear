@@ -378,7 +378,7 @@ nk_glfw3_init(struct nk_glfw *glfw, GLFWwindow *win, enum nk_glfw_init_state ini
     nk_init_default(&glfw->ctx, 0);
     glfw->ctx.clip.copy = nk_glfw3_clipboard_copy;
     glfw->ctx.clip.paste = nk_glfw3_clipboard_paste;
-    glfw->ctx.clip.userdata = nk_handle_ptr(&glfw);
+    glfw->ctx.clip.userdata = nk_handle_ptr(glfw);
     glfw->last_button_click = 0;
     nk_glfw3_device_create(glfw);
 
@@ -427,7 +427,7 @@ nk_glfw3_new_frame(struct nk_glfw *glfw)
 #ifdef NK_GLFW_GL3_MOUSE_GRABBING
     /* optional grabbing behavior */
     if (ctx->input.mouse.grab)
-        glfwSetInputMode(glfw.win, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetInputMode(glfw->win, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     else if (ctx->input.mouse.ungrab)
         glfwSetInputMode(glfw->win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 #endif
